@@ -1,0 +1,28 @@
+services:
+  db:
+    build: ./db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sampledb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: ./app
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: sampledb
+      
+
+volumes:
+  postgres_data:

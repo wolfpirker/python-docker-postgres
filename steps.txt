@@ -1,0 +1,57 @@
+
+
+1) follow the Readme
+
+2) Build and run the Docker containers
+$ docker-compose up --build
+
+
+3) Access the database
+
+The PostgreSQL database will be accessible on localhost:5432. You can connect to it using any PostgreSQL client with the following credentials:
+
+    Username: user
+
+    Password: password
+
+    Database: sampledb
+    
+3*) instead of accessing the database, possible to query data in interactive Python application:
+ * use "docker attach <container-id>
+ to attach your shell to the running container, running the Python application.
+ The menu option in the Python sample application are the following:
+ Choose an option:
+	1. Add a new user
+	2. Add a new order for an existing user
+	3. List all users
+	4. List all orders for a specific user
+	5. Exit
+
+    Note: orders contain only a date and amount, not a actual item name!
+    
+4) Check the application logs
+
+The Python application will fetch data from the API, process it, and insert it into the database. 
+You can view the logs in the terminal where you ran docker-compose up.
+
+
+5) Stopping the Containers
+
+To stop and remove the containers, run:
+bash
+Copy
+
+docker-compose down
+
+
+___________________
+License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+______________
+
+### Summary
+
+This extended version of the project now includes a CLI that allows users to interact with the database by adding new users and orders, 
+and by listing existing users and orders. The CLI is integrated into the main application and can be accessed when running the Docker containers. 
+This makes it easy to manage and query the database directly from the command line.
