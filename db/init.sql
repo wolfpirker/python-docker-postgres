@@ -1,27 +1,30 @@
--- Create tables
+-- Create users table
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE NOT NULL
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100),
+    email NVARCHAR(100) UNIQUE NOT NULL
 );
 
+-- Create products table
 CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100) NOT NULL,
     price DECIMAL(10, 2) NOT NULL
 );
 
+-- Create orders table
 CREATE TABLE orders (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT FOREIGN KEY REFERENCES users(id),
     order_date DATE
 );
 
+-- Create order_items table
 CREATE TABLE order_items (
-    id SERIAL PRIMARY KEY,
-    order_id INTEGER REFERENCES orders(id),
-    product_id INTEGER REFERENCES products(id),
-    quantity INTEGER NOT NULL
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    order_id INT FOREIGN KEY REFERENCES orders(id),
+    product_id INT FOREIGN KEY REFERENCES products(id),
+    quantity INT NOT NULL
 );
 
 -- Insert sample data

@@ -21,3 +21,9 @@ can you please revise and extend the example by the following:
   - when starting a new DB container, it should check for preexisting data in the host system
 * the orders DB entity does not contain any order items; please extend the DB entity of orders with a product type, and add another DB entity for the product types
 * please initialize the data for each user, with two orders, each order containing one or more products, of different amount. Fill also the product DB entity accordingly.
+
+
+___________________________
+
+4) In the last example revision, what would have to be changed, if the underlying database 
+should be MS SQL Server instead of Postgres?

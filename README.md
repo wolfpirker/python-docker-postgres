@@ -1,10 +1,9 @@
-# Sample Python and PostgreSQL Project with Docker
+# Sample Python and MS SQL Server Project with Docker
 
-This project demonstrates a simple Python application that interacts with a PostgreSQL database. 
+This project demonstrates a simple Python application that interacts with a Microsoft SQL Server database. 
 The application fetches data from a public API, processes it using Pandas, and stores the results in the database. 
-Additionally, it provides a command-line interface (CLI) for adding new users and orders, and for 
-listing existing users, orders, and products.
-
+Additionally, it provides a command-line interface (CLI) for adding new users and orders, 
+and for listing existing users, orders, and products.
 ## Prerequisites
 
 - Docker
@@ -24,11 +23,11 @@ $ docker-compose up --build
 
 3.) Access the database
 
-The PostgreSQL database will be accessible on localhost:5432. You can connect to it using any PostgreSQL client with the following credentials:
+The MS SQL Server database will be accessible on localhost:1433. You can connect to it using any SQL Server client with the following credentials:
 
-    Username: user
+    Username: sa
 
-    Password: password
+    Password: YourStrong!Passw0rd
 
     Database: sampledb
     
@@ -52,14 +51,7 @@ The Python application provides a simple CLI for interacting with the database. 
     
 ================================
 Data Persistence
-Option 1: Bind Mounts
-
-The database data is persisted on the host system using a bind mount. The data is stored in the ./db/data directory.
-Option 2: Copy Data to Host
-
-To copy the database data to the host system, run the following command:
-bash
-Copy
+The database data is persisted using a Docker volume. The data is stored in the mssql_data volume.
 
 docker-compose exec db /scripts/copy_data_to_host.sh
 
