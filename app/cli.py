@@ -9,23 +9,21 @@ class CLI:
             print("2. Add a new order for an existing user")
             print("3. List all users")
             print("4. List all orders for a specific user")
-            print("5. Exit")
+            print("5. List all products")
+            print("6. Exit")
             choice = input("Enter your choice: ")
 
             if choice == '1':
-				print ("-> add a user.")
                 self.add_user()
             elif choice == '2':
-				print ("-> add order for an user.")
                 self.add_order()
             elif choice == '3':
-				print ("-> list all users.")
                 self.list_users()
             elif choice == '4':
-				print ("-> list all orders of specific users.")
                 self.list_orders()
             elif choice == '5':
-				print ("-> exit the app")
+                self.list_products()
+            elif choice == '6':
                 break
             else:
                 print("Invalid choice. Please try again.")
@@ -40,10 +38,16 @@ class CLI:
 
     def add_order(self):
         user_id = input("Enter user ID: ")
-        amount = input("Enter order amount: ")
         order_date = input("Enter order date (YYYY-MM-DD): ")
         with self.conn.cursor() as cur:
-            cur.execute("INSERT INTO orders (user_id, amount, order_date) VALUES (%s, %s, %s)", (user_id, amount, order_date))
+            cur.execute("INSERT INTO orders (user_id, order_date) VALUES (%s, %s) RETURNING id", (user_id, order_date))
+            order_id = cur.fetchone()[0]
+            while True:
+                product_id = input("Enter product ID (or 'done' to finish): ")
+                if product_id == 'done':
+                    break
+                quantity = input("Enter quantity: ")
+                cur.execute("INSERT INTO order_items (order_id, product_id, quantity) VALUES (%s, %s, %s)", (order_id, product_id, quantity))
             self.conn.commit()
         print("Order added successfully.")
 
@@ -57,7 +61,20 @@ class CLI:
     def list_orders(self):
         user_id = input("Enter user ID: ")
         with self.conn.cursor() as cur:
-            cur.execute("SELECT * FROM orders WHERE user_id = %s", (user_id,))
+            cur.execute("""
+                SELECT o.id, o.order_date, p.name, oi.quantity, p.price
+                FROM orders o
+                JOIN order_items oi ON o.id = oi.order_id
+                JOIN products p ON oi.product_id = p.id
+                WHERE o.user_id = %s
+            """, (user_id,))
             orders = cur.fetchall()
             for order in orders:
-                print(f"ID: {order[0]}, User ID: {order[1]}, Amount: {order[2]}, Order Date: {order[3]}")
+                print(f"Order ID: {order[0]}, Date: {order[1]}, Product: {order[2]}, Quantity: {order[3]}, Price: {order[4]}")
+
+    def list_products(self):
+        with self.conn.cursor() as cur:
+            cur.execute("SELECT * FROM products")
+            products = cur.fetchall()
+            for product in products:
+                print(f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}")

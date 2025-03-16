@@ -8,7 +8,11 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: sampledb
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      # Option 1: Bind mount for persistence
+      - ./db/data:/var/lib/postgresql/data
+      # Option 2: Copy data to host (see scripts/copy_data_to_host.sh)
+    entrypoint: ["./scripts/check_existing_data.sh"]
+    command: ["postgres"]
 
   app:
     build: ./app
@@ -22,7 +26,3 @@ services:
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: sampledb
-      
-
-volumes:
-  postgres_data:

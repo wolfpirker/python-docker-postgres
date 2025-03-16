@@ -4,6 +4,9 @@ project/
 ├── db/
 │   ├── Dockerfile
 │   ├── init.sql
+│   ├── scripts/
+│   │   ├── check_existing_data.sh
+│   │   ├── copy_data_to_host.sh
 ├── app/
 │   ├── Dockerfile
 │   ├── requirements.txt
